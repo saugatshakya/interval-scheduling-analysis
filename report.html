@@ -7808,7 +7808,7 @@ a.anchor-link {
 <li>Part 3: Proof and Complexity (Theory)</li>
 <li>Interval Scheduling: Implementation and Empirical Analysis</li>
 </ol>
-<p><strong>Repository Access:</strong> All runnable source code, datasets, benchmarking scripts, and plotting utilities used in this report are available at: <a href="https://github.com/saugatshakya/interval-scheduling-analysis">GitHub Repository</a></p>
+<p><strong>Repository:</strong> <a href="https://github.com/saugatshakya/interval-scheduling-analysis">GitHub</a></p>
 <hr/>
 </div>
 </div>
@@ -7821,9 +7821,31 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Part-1:-Basic-Concepts">Part 1: Basic Concepts<a class="anchor-link" href="#Part-1:-Basic-Concepts">¶</a></h1><h2 id="1.-Three-Primary-Criteria-for-Algorithm-Design">1. Three Primary Criteria for Algorithm Design<a class="anchor-link" href="#1.-Three-Primary-Criteria-for-Algorithm-Design">¶</a></h2><ol>
-<li><strong>Correctness</strong>: Produces correct output for all valid inputs and terminates.</li>
-<li><strong>Efficiency</strong>: Uses time and space resources effectively (Big-O time/space).</li>
-<li><strong>Clarity/Simplicity</strong>: Easy to understand, implement, and maintain.</li>
+<li><p><strong>Correctness</strong>: Produces correct output for all valid inputs and terminates.</p>
+<ul>
+<li>An algorithm must produce the <strong>right answer</strong> for every possible input within its domain.</li>
+<li>Correctness can be formal (proved mathematically) or empirical (tested extensively).</li>
+<li>Without correctness, an algorithm is fundamentally useless, regardless of speed or elegance.</li>
+<li>Example: A sorting algorithm must produce a sorted array for all possible input arrays (any order, any values, any size).</li>
+</ul>
+</li>
+<li><p><strong>Efficiency</strong>: Uses time and space resources effectively (Big-O time/space).</p>
+<ul>
+<li>Time efficiency measures how the algorithm's runtime grows with input size $n$ (e.g., $O(n \log n)$ is better than $O(n^2)$).</li>
+<li>Space efficiency measures memory usage, critical for large-scale problems (e.g., in-place $O(1)$ is better than $O(n)$ auxiliary space).</li>
+<li>Efficiency determines whether an algorithm is practical: a correct algorithm with $O(2^n)$ runtime is useless for $n &gt; 30$.</li>
+<li>Example: Sorting with $O(n \log n)$ (merge sort, quick sort) is preferred over $O(n^2)$ (bubble sort, insertion sort) for large datasets.</li>
+</ul>
+</li>
+<li><p><strong>Clarity/Simplicity</strong>: Easy to understand, implement, and maintain.</p>
+<ul>
+<li>Clear algorithms are less prone to bugs during implementation and easier to debug when issues arise.</li>
+<li>Simple code is maintainable: future developers (or your future self) can understand and modify it without confusion.</li>
+<li>There's a trade-off: sometimes the most efficient algorithm is less intuitive (e.g., fast Fourier transform vs. naive convolution).</li>
+<li>In practice, choosing between a slightly slower but clear solution vs. a faster but complex one depends on the project's constraints.</li>
+<li>Example: A clear $O(n^2)$ solution may be preferable to an obscure $O(n \log n)$ solution if the data size is small and clarity matters more.</li>
+</ul>
+</li>
 </ol>
 <h2 id="2.-Five-Basic-Data-Structure-Types-and-Complexities">2. Five Basic Data Structure Types and Complexities<a class="anchor-link" href="#2.-Five-Basic-Data-Structure-Types-and-Complexities">¶</a></h2><table>
 <thead>
@@ -7863,18 +7885,18 @@ a.anchor-link {
 </tr>
 <tr>
 <td>Binary Search Tree</td>
-<td>$O(og n)$</td>
-<td>$O(og n)$</td>
-<td>$O(og n)$</td>
-<td>$O(og n)$</td>
+<td>$O(\log n)$</td>
+<td>$O(\log n)$</td>
+<td>$O(\log n)$</td>
+<td>$O(\log n)$</td>
 <td>$O(n)$</td>
 </tr>
 <tr>
 <td>Heap</td>
 <td>$O(n)$</td>
 <td>$O(n)$</td>
-<td>$O(og n)$</td>
-<td>$O(og n)$</td>
+<td>$O(\log n)$</td>
+<td>$O(\log n)$</td>
 <td>$O(n)$</td>
 </tr>
 </tbody>
@@ -7882,9 +7904,9 @@ a.anchor-link {
 <p>*After locating the position to insert/delete</p>
 <h2 id="3.-Objective-of-the-Interval-Scheduling-Problem">3. Objective of the Interval Scheduling Problem<a class="anchor-link" href="#3.-Objective-of-the-Interval-Scheduling-Problem">¶</a></h2><p>Select a <strong>maximum-size subset</strong> of pairwise non-overlapping intervals. Formally:</p>
 <ul>
-<li>Input: $I = (s_i,f_i)$ with $s_i &lt; f_i$</li>
-<li>Compatibility: $f_i e s_j$ or $f_j e s_i$</li>
-<li>Goal: maximize $|S|$ where $S ubseteq I$ and all intervals are compatible</li>
+<li>Input: $I = \{(s_i,f_i)\}$ with $s_i &lt; f_i$</li>
+<li>Compatibility: Two intervals $(s_i, f_i)$ and $(s_j, f_j)$ are compatible if $f_i \le s_j$ or $f_j \le s_i$</li>
+<li>Goal: maximize $|S|$ where $S \subseteq I$ and all intervals in $S$ are pairwise compatible</li>
 </ul>
 <h2 id="4.-Three-Greedy-Strategies-for-Interval-Scheduling">4. Three Greedy Strategies for Interval Scheduling<a class="anchor-link" href="#4.-Three-Greedy-Strategies-for-Interval-Scheduling">¶</a></h2><ol>
 <li><strong>Earliest Finish Time (EFT)</strong>: sort by increasing finish time $f_i$ (optimal).</li>
@@ -7906,18 +7928,18 @@ a.anchor-link {
 <td>Not guaranteed</td>
 </tr>
 <tr>
-<td>Proof</td>
-<td>Formal proof possible</td>
-<td>Empirical validation only</td>
-</tr>
-<tr>
 <td>Output</td>
 <td>Always correct</td>
 <td>Often good but can be suboptimal</td>
 </tr>
 <tr>
+<td>Proof</td>
+<td>Formal proof possible</td>
+<td>Empirical validation only</td>
+</tr>
+<tr>
 <td>Example</td>
-<td>Dijkstra’s shortest path</td>
+<td>Dijkstra's shortest path</td>
 <td>Nearest Neighbor for TSP</td>
 </tr>
 </tbody>
@@ -7932,35 +7954,69 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-2:-Application-and-Analysis">Part 2: Application and Analysis<a class="anchor-link" href="#Part-2:-Application-and-Analysis">¶</a></h1><h2 id="1.-Earliest-Finish-Time-(EFT)-Algorithm-Steps">1. Earliest Finish Time (EFT) Algorithm Steps<a class="anchor-link" href="#1.-Earliest-Finish-Time-(EFT)-Algorithm-Steps">¶</a></h2><ol>
-<li>Sort intervals by increasing finish time.</li>
-<li>Initialize an empty selected set and $\text{lastfinish} = -\infty$.</li>
-<li>Scan in order and select each interval whose start is $\ge \text{lastfinish}$.</li>
-<li>Update $\text{lastfinish}$ each time an interval is selected.</li>
+<h1 id="Part-2:-Application-and-Analysis">Part 2: Application and Analysis<a class="anchor-link" href="#Part-2:-Application-and-Analysis">¶</a></h1><h2 id="1.-Earliest-Finish-Time-(EFT)-Algorithm-Steps">1. Earliest Finish Time (EFT) Algorithm Steps<a class="anchor-link" href="#1.-Earliest-Finish-Time-(EFT)-Algorithm-Steps">¶</a></h2><p><strong>Algorithm Description:</strong> The Earliest Finish Time (EFT) greedy algorithm selects intervals greedily by always choosing the interval that finishes earliest among all compatible options. This ensures maximum room for future intervals.</p>
+<p><strong>Detailed Steps:</strong></p>
+<ol>
+<li><p><strong>Sort intervals by increasing finish time</strong> ($f_i$ in ascending order).</p>
+<ul>
+<li>This preprocessing step is crucial: it orders intervals so we can greedily select from the earliest-finishing available intervals.</li>
+<li>Sorting takes $O(n \log n)$ time, which dominates the algorithm's complexity.</li>
+</ul>
+</li>
+<li><p><strong>Initialize an empty selected set and $\text{lastfinish} = -\infty$.</strong></p>
+<ul>
+<li>The selected set tracks which intervals we've chosen.</li>
+<li>$\text{lastfinish}$ tracks the finish time of the last selected interval (initialized to $-\infty$ so the first interval always qualifies).</li>
+</ul>
+</li>
+<li><p><strong>Scan in order and select each interval whose start is $\ge \text{lastfinish}$.</strong></p>
+<ul>
+<li>For each interval in sorted order, check if it's compatible with previously selected intervals.</li>
+<li>Compatibility is guaranteed because we track only $\text{lastfinish}$: if $s_i \ge \text{lastfinish}$, then interval $i$ doesn't overlap with any selected interval.</li>
+<li>This greedy choice—picking the earliest-finishing interval—maximizes the remaining time window for future intervals.</li>
+</ul>
+</li>
+<li><p><strong>Update $\text{lastfinish}$ each time an interval is selected.</strong></p>
+<ul>
+<li>After selecting interval $i$, update $\text{lastfinish} = f_i$ to ensure future selections are compatible.</li>
+</ul>
+</li>
 </ol>
-<p>Time complexity: $O(n \log n)$ due to sorting.</p>
-<h2 id="2.-Why-Nearest-Neighbor-for-TSP-is-a-Heuristic">2. Why Nearest Neighbor for TSP is a Heuristic<a class="anchor-link" href="#2.-Why-Nearest-Neighbor-for-TSP-is-a-Heuristic">¶</a></h2><ul>
-<li>Makes locally greedy choices (closest city) that can lead to globally suboptimal tours.</li>
-<li>No guarantee of optimality or bounded approximation ratio in all cases.</li>
-<li>TSP is NP-hard, so exact solutions are exponential in general.</li>
-</ul>
-<h2 id="3.-Loop-Invariant-and-Induction">3. Loop Invariant and Induction<a class="anchor-link" href="#3.-Loop-Invariant-and-Induction">¶</a></h2><p>A loop invariant is a property that holds <strong>before</strong>, <strong>during</strong>, and <strong>after</strong> each iteration. Proving the invariant uses the same structure as induction:</p>
+<p><strong>Time Complexity:</strong> $O(n \log n)$ due to sorting.</p>
+<h2 id="2.-Why-Nearest-Neighbor-for-TSP-is-a-Heuristic">2. Why Nearest Neighbor for TSP is a Heuristic<a class="anchor-link" href="#2.-Why-Nearest-Neighbor-for-TSP-is-a-Heuristic">¶</a></h2><p>The Traveling Salesman Problem (TSP) asks: given $n$ cities and distances between all pairs, find the shortest route visiting each city exactly once and returning to the start.</p>
+<p><strong>Nearest Neighbor (NN) Algorithm:</strong></p>
+<ol>
+<li>Start at an arbitrary city.</li>
+<li>Repeatedly visit the unvisited city closest to the current city.</li>
+<li>Return to the start city.</li>
+</ol>
+<p><strong>Why NN is a Heuristic (Not an Algorithm):</strong></p>
 <ul>
-<li>Base case: invariant holds before loop.</li>
-<li>Inductive step: if it holds before an iteration, it holds after.</li>
-<li>Termination: when the loop ends, the invariant implies correctness.</li>
+<li><strong>No Correctness Guarantee:</strong> NN makes locally optimal choices (always picking the nearest unvisited city) that can lead to globally suboptimal tours.</li>
+<li><strong>No Optimality Bound:</strong> Unlike approximation algorithms, NN has no guarantee.</li>
+<li><strong>NP-hard Problem:</strong> TSP is NP-hard. NN is polynomial-time ($O(n^2)$), trading optimality for speed.</li>
 </ul>
-<h2 id="4.-What-NP-hard-Means-(TSP)">4. What NP-hard Means (TSP)<a class="anchor-link" href="#4.-What-NP-hard-Means-(TSP)">¶</a></h2><p>A problem is NP-hard if it is at least as hard as the hardest problems in NP. For TSP, this means:</p>
+<h2 id="3.-Explain-the-Concept-of-Loop-Invariant-and-Its-Relation-to-Mathematical-Induction">3. Explain the Concept of Loop Invariant and Its Relation to Mathematical Induction<a class="anchor-link" href="#3.-Explain-the-Concept-of-Loop-Invariant-and-Its-Relation-to-Mathematical-Induction">¶</a></h2><p>A <strong>loop invariant</strong> is a property that holds before, during, and after each iteration of a loop. Proving the invariant uses the same structure as mathematical induction:</p>
 <ul>
-<li>No known polynomial-time exact algorithm.</li>
-<li>Exact solutions require exponential-time search in the worst case.</li>
-<li>Heuristics/approximations are used for large instances.</li>
+<li><strong>Base case:</strong> invariant holds before the loop starts (at iteration 0).</li>
+<li><strong>Inductive step:</strong> if it holds before iteration $i$, it holds after iteration $i$ (before iteration $i+1$).</li>
+<li><strong>Termination:</strong> when the loop exits, the invariant implies the algorithm's correctness.</li>
 </ul>
-<h2 id="5.-How-Modularity-Helps-Implementation">5. How Modularity Helps Implementation<a class="anchor-link" href="#5.-How-Modularity-Helps-Implementation">¶</a></h2><p>Modularity decomposes an algorithm into independent components, making it:</p>
+<p><strong>Connection to Induction:</strong> Loop invariants directly correspond to inductive proofs. For the EFT algorithm, the invariant might be: "After processing the first $i$ intervals, the selected set contains the maximum-size compatible subset of those $i$ intervals." We prove this by induction on $i$, and when $i = n$, the algorithm's correctness follows.</p>
+<h2 id="4.-What-Does-It-Mean-for-a-Problem-Like-TSP-to-Be-NP-hard?">4. What Does It Mean for a Problem Like TSP to Be NP-hard?<a class="anchor-link" href="#4.-What-Does-It-Mean-for-a-Problem-Like-TSP-to-Be-NP-hard?">¶</a></h2><p>A problem is <strong>NP-hard</strong> if it is at least as hard as the hardest problems in NP. For TSP, this means:</p>
 <ul>
-<li>Easier to implement and test</li>
-<li>Easier to reuse and debug</li>
-<li>Easier to optimize individual components without breaking the whole program</li>
+<li><strong>Exact solutions require exponential-time search</strong> in the worst case.</li>
+<li><strong>No known polynomial-time exact algorithm</strong> exists (and none likely will unless P = NP).</li>
+<li><strong>Verification is fast:</strong> if someone gives you a proposed tour, you can check its length in polynomial time.</li>
+<li><strong>Consequence:</strong> For large $n$, exact algorithms become impractical; heuristics and approximations are used instead.</li>
+</ul>
+<h2 id="5.-How-Does-Modularity-Contribute-to-Ease-of-Implementation?">5. How Does Modularity Contribute to Ease of Implementation?<a class="anchor-link" href="#5.-How-Does-Modularity-Contribute-to-Ease-of-Implementation?">¶</a></h2><p><strong>Modularity</strong> decomposes an algorithm into independent, self-contained components, making it:</p>
+<ul>
+<li><strong>Easier to implement:</strong> each module can be coded and tested separately.</li>
+<li><strong>Easier to debug:</strong> if a bug exists, it's localized to a specific module.</li>
+<li><strong>Easier to optimize:</strong> individual components can be optimized without affecting others.</li>
+<li><strong>Easier to reuse:</strong> a module designed for one problem can often be used in another.</li>
+<li><strong>Easier to understand:</strong> the overall logic is clearer when broken into simple pieces.</li>
 </ul>
 </div>
 </div>
@@ -7972,20 +8028,54 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Part-3:-Proof-and-Complexity">Part 3: Proof and Complexity<a class="anchor-link" href="#Part-3:-Proof-and-Complexity">¶</a></h1><h2 id="1.-Proof-by-Contradiction-(EFT-Optimality)">1. Proof by Contradiction (EFT Optimality)<a class="anchor-link" href="#1.-Proof-by-Contradiction-(EFT-Optimality)">¶</a></h2><p>Assume EFT chooses $m$ intervals and an optimal solution chooses $k&gt;m$. Let both be sorted by finish time. EFT always picks the earliest finish among compatible intervals, so the $i$th greedy interval finishes no later than the $i$th optimal interval. Thus the $m$th greedy interval finishes no later than the $m$th optimal interval. Any interval compatible with the optimal $m$th interval is also compatible with the greedy $m$th interval, so greedy could select at least one more interval, contradicting $m&lt;k$. Therefore $m=k$ and EFT is optimal.</p>
-<h2 id="2.-Counterexample-for-Shortest-Duration-Strategy">2. Counterexample for Shortest Duration Strategy<a class="anchor-link" href="#2.-Counterexample-for-Shortest-Duration-Strategy">¶</a></h2><p>Intervals:</p>
+<h1 id="Part-3:-Proof-and-Complexity">Part 3: Proof and Complexity<a class="anchor-link" href="#Part-3:-Proof-and-Complexity">¶</a></h1><h2 id="1.-Proof-by-Contradiction:-EFT-Optimality">1. Proof by Contradiction: EFT Optimality<a class="anchor-link" href="#1.-Proof-by-Contradiction:-EFT-Optimality">¶</a></h2><p><strong>Claim:</strong> The Earliest Finish Time (EFT) greedy algorithm selects a maximum-size set of compatible intervals.</p>
+<p><strong>Proof by Contradiction:</strong></p>
+<p>Assume for contradiction that there exists an input where EFT selects fewer intervals than some optimal solution OPT. Let $e_1, e_2, \ldots, e_k$ be the intervals selected by EFT (in order of finish time), and $o_1, o_2, \ldots, o_m$ be the intervals in OPT, with $m &gt; k$.</p>
+<p>Since EFT is greedy, $e_1$ has the earliest finish time among all intervals. We can show by induction that for each $i \le k$, the interval $e_i$ finishes no later than $o_i$. This follows because:</p>
 <ul>
-<li>A: [1, 11] (duration 10)</li>
-<li>B: [2, 4] (duration 2)</li>
-<li>C: [5, 7] (duration 2)</li>
-<li>D: [8, 15] (duration 7)</li>
+<li>$e_1$ finishes earliest overall, so $f_{e_1} \le f_{o_1}$.</li>
+<li>If $f_{e_i} \le f_{o_i}$, then $e_{i+1}$ (the next available interval after $e_i$) can start no earlier than $e_i$ finishes, whereas $o_{i+1}$ can start no earlier than $o_i$ finishes. Since $f_{e_i} \le f_{o_i}$, interval $e_{i+1}$ finishes no later than $o_{i+1}$.</li>
 </ul>
-<p>SD sorts by duration: B, C, D, A. SD selects B and C, then rejects D (overlaps with C) and A (overlaps with B/C). Result size = 2. Optimal selects B, C, and D (all compatible), result size = 3. Therefore SD is not optimal.</p>
-<h2 id="3.-Exhaustive-Search-Complexity-(20-point-Robot-Tour)">3. Exhaustive Search Complexity (20-point Robot Tour)<a class="anchor-link" href="#3.-Exhaustive-Search-Complexity-(20-point-Robot-Tour)">¶</a></h2><p>Number of tours for $n$ points (symmetric): $(n-1)!/2$. For $n=20$:
-$$\frac{19!}{2} \approx 1.22 \times 10^{17}$$
-At $10^9$ tours/second, this is about 3.9 years; in practice much longer. Therefore exhaustive search is impractical.</p>
-<h2 id="4.-Why-Induction-Beats-Trial-and-Error">4. Why Induction Beats Trial-and-Error<a class="anchor-link" href="#4.-Why-Induction-Beats-Trial-and-Error">¶</a></h2><p>Testing can only cover a finite set of inputs. A proof by induction establishes correctness for all valid inputs, which is the only rigorous guarantee.</p>
-<h2 id="5.-Quicksort-vs.-Mergesort-(Worst-case-and-Space)">5. Quicksort vs. Mergesort (Worst-case and Space)<a class="anchor-link" href="#5.-Quicksort-vs.-Mergesort-(Worst-case-and-Space)">¶</a></h2><table>
+<p>By induction, $f_{e_k} \le f_{o_k}$. But then EFT could have selected $o_{k+1}$ (which is compatible with $e_1, \ldots, e_k$ since it's compatible with $o_1, \ldots, o_k$ and $f_{e_k} \le f_{o_k}$), contradicting that EFT selected only $k$ intervals. Therefore, EFT must be optimal. $\square$</p>
+<h2 id="2.-Counterexample:-Shortest-Duration-(SD)-Fails">2. Counterexample: Shortest Duration (SD) Fails<a class="anchor-link" href="#2.-Counterexample:-Shortest-Duration-(SD)-Fails">¶</a></h2><p><strong>Claim:</strong> The Shortest Duration (SD) greedy strategy—which sorts intervals by duration $(f_i - s_i)$ and greedily selects the shortest—is NOT always optimal.</p>
+<p><strong>Counterexample:</strong></p>
+<ul>
+<li><strong>A:</strong> $[0, 10]$ (duration 10)</li>
+<li><strong>B:</strong> $[1, 2]$ (duration 1)</li>
+<li><strong>C:</strong> $[3, 11]$ (duration 8)</li>
+</ul>
+<p><strong>SD Algorithm Execution:</strong></p>
+<ol>
+<li>Sort by duration: B (1), C (8), A (10).</li>
+<li>Select B: $\text{lastfinish} = 2$.</li>
+<li>Consider C: $s_C = 3 \ge 2$, so select C: $\text{lastfinish} = 11$.</li>
+<li>Consider A: $s_A = 0 &lt; 11$, so REJECT A.</li>
+</ol>
+<p><strong>SD Result:</strong> 2 intervals (B, C).</p>
+<p><strong>Optimal Solution:</strong> Select B and A, or select A alone. Since B and A are compatible (B ends at 2, A starts at 0 but ends at 10, and B $[1,2]$ is after A starts), we can select both. Result: 2 intervals. Actually, EFT would select B and A, also 2 intervals.</p>
+<p><strong>Better Counterexample:</strong></p>
+<ul>
+<li><strong>A:</strong> $[0, 5]$ (duration 5)</li>
+<li><strong>B:</strong> $[1, 2]$ (duration 1)</li>
+<li><strong>C:</strong> $[3, 4]$ (duration 1)</li>
+<li><strong>D:</strong> $[5, 6]$ (duration 1)</li>
+</ul>
+<p><strong>SD:</strong> Selects B (1), then C (compatible), then rejects D (overlaps with C), then rejects A. Result = 2 intervals (B, C).</p>
+<p><strong>Optimal (EFT):</strong> Selects B, C, D (all compatible). Result = 3 intervals.</p>
+<p>Therefore, SD is not optimal. $\square$</p>
+<h2 id="3.-Exhaustive-Search-Complexity-for-20-point-Robot-Tour">3. Exhaustive Search Complexity for 20-point Robot Tour<a class="anchor-link" href="#3.-Exhaustive-Search-Complexity-for-20-point-Robot-Tour">¶</a></h2><p>For a Traveling Salesman Problem with 20 cities, the number of possible tours (treating clockwise and counterclockwise as equivalent) is:</p>
+<p>$$(n-1)!/2 = 19!/2 \approx 1.22 \times 10^{17}$$</p>
+<p>Assuming a modern computer can evaluate $10^9$ tours per second, this would require:</p>
+<p>$$\frac{1.22 \times 10^{17}}{10^9} \approx 1.22 \times 10^8 \text{ seconds} \approx 3.9 \text{ years}$$</p>
+<p>In practice, exhaustive search is far slower due to overhead, making it impractical for $n \ge 20$.</p>
+<h2 id="4.-Why-Induction-Beats-Trial-and-Error-for-Proving-Correctness">4. Why Induction Beats Trial-and-Error for Proving Correctness<a class="anchor-link" href="#4.-Why-Induction-Beats-Trial-and-Error-for-Proving-Correctness">¶</a></h2><p><strong>Trial-and-Error (Testing):</strong> Can only validate the algorithm on a finite number of test cases. No matter how many inputs you test, you cannot cover all possible inputs. Example: after testing an algorithm on 1 million inputs, you cannot guarantee it works on the 1-millionth-and-first input.</p>
+<p><strong>Mathematical Induction:</strong> Establishes correctness for <strong>all valid inputs</strong> by proving:</p>
+<ol>
+<li><strong>Base case:</strong> the algorithm is correct for the smallest input.</li>
+<li><strong>Inductive step:</strong> if the algorithm is correct for input of size $k$, then it's correct for size $k+1$.</li>
+</ol>
+<p>This proof covers infinitely many cases and is the only rigorous guarantee.</p>
+<h2 id="5.-Complexity-Trade-offs:-Quicksort-vs.-Mergesort">5. Complexity Trade-offs: Quicksort vs. Mergesort<a class="anchor-link" href="#5.-Complexity-Trade-offs:-Quicksort-vs.-Mergesort">¶</a></h2><table>
 <thead>
 <tr>
 <th>Criterion</th>
@@ -7994,6 +8084,11 @@ At $10^9$ tours/second, this is about 3.9 years; in practice much longer. Theref
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Average Time</td>
+<td>$O(n \log n)$</td>
+<td>$O(n \log n)$</td>
+</tr>
 <tr>
 <td>Worst-case Time</td>
 <td>$O(n^2)$</td>
@@ -8004,9 +8099,19 @@ At $10^9$ tours/second, this is about 3.9 years; in practice much longer. Theref
 <td>$O(\log n)$ (in-place recursion)</td>
 <td>$O(n)$ (extra arrays)</td>
 </tr>
+<tr>
+<td>Stability</td>
+<td>Not stable</td>
+<td>Stable</td>
+</tr>
+<tr>
+<td>Practical Speed</td>
+<td>Faster on average (low constant factor)</td>
+<td>Slower in practice (higher constant factor)</td>
+</tr>
 </tbody>
 </table>
-<p>Quicksort is faster on average but can degrade badly; mergesort has a guaranteed $O(n \log n)$ worst case with higher space cost.</p>
+<p><strong>Trade-off Summary:</strong> Quicksort is faster on average and uses less memory, but can degrade to $O(n^2)$ on adversarial inputs. Mergesort guarantees $O(n \log n)$ worst-case time but requires $O(n)$ extra space. Choice depends on problem constraints (guaranteed vs. average performance, memory availability).</p>
 </div>
 </div>
 </div>
@@ -8017,8 +8122,7 @@ At $10^9$ tours/second, this is about 3.9 years; in practice much longer. Theref
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Interval-Scheduling:-Implementation-and-Empirical-Analysis">Interval Scheduling: Implementation and Empirical Analysis<a class="anchor-link" href="#Interval-Scheduling:-Implementation-and-Empirical-Analysis">¶</a></h1><p><strong>Note:</strong> Code snippets shown in this report are illustrative; the complete, executable implementation with all edge cases and optimizations is provided in the GitHub repository.</p>
-<p>This section implements all required algorithms, datasets, experiments, and plots for the interval scheduling assignment.</p>
+<h1 id="Interval-Scheduling:-Implementation-and-Empirical-Analysis">Interval Scheduling: Implementation and Empirical Analysis<a class="anchor-link" href="#Interval-Scheduling:-Implementation-and-Empirical-Analysis">¶</a></h1><p>This section implements all required algorithms, datasets, experiments, and plots for the interval scheduling assignment.</p>
 <h2 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a></h2><ol>
 <li>Implement greedy algorithms (EFT, EST, SD)</li>
 <li>Implement exhaustive optimal solver</li>
@@ -8027,13 +8131,14 @@ At $10^9$ tours/second, this is about 3.9 years; in practice much longer. Theref
 <li>Analyze solution quality vs. optimal solutions</li>
 <li>Visualize results and draw conclusions</li>
 </ol>
-<h3 id="Repository-Contents">Repository Contents<a class="anchor-link" href="#Repository-Contents">¶</a></h3><ul>
-<li><code>greedy_algorithms.py</code> — EFT, EST, SD implementations with compatibility checking</li>
-<li><code>exhaustive_solver.py</code> — Optimal subset enumeration algorithm</li>
-<li><code>dataset_generator.py</code> — Controlled synthetic dataset generation with overlap regimes</li>
-<li><code>benchmarking.py</code> — Runtime measurement framework and statistical analysis</li>
-<li><code>plots/</code> — Generated complexity validation and quality analysis figures</li>
-<li><code>README.md</code> — Complete instructions for reproduction</li>
+<h3 id="Notebook-Contents">Notebook Contents<a class="anchor-link" href="#Notebook-Contents">¶</a></h3><p>This notebook integrates all required components:</p>
+<ul>
+<li><strong>Dataset Generation</strong> (Section 2): Controlled synthetic interval generation with overlap regimes</li>
+<li><strong>Greedy Algorithms</strong> (Section 3): EFT, EST, SD implementations with compatibility checking</li>
+<li><strong>Exhaustive Solver</strong> (Section 4): Optimal subset enumeration algorithm for validation</li>
+<li><strong>Benchmarking Framework</strong> (Section 5): Runtime measurement across input sizes with statistical analysis</li>
+<li><strong>Complexity Validation</strong> (Section 6): Log-log and normalized runtime plots for Big-O analysis</li>
+<li><strong>Quality Analysis</strong> (Section 7): Solution optimality comparison across overlap regimes</li>
 </ul>
 </div>
 </div>
@@ -9223,14 +9328,6 @@ EXHAUSTIVE RUNTIME SUMMARY (s)
 </ol>
 <p>All experiments are fully reproducible using the benchmarking and plotting scripts provided in the GitHub repository. Results shown are mean values from at least 10 independent trials per configuration, with standard deviations reported in tables and error bands in plots.</p>
 <h3 id="Reproducibility">Reproducibility<a class="anchor-link" href="#Reproducibility">¶</a></h3><p>All experiments are fully reproducible using the benchmarking and plotting scripts provided in the GitHub repository. Results shown are mean values from at least 10 independent trials per configuration, with standard deviations reported in tables and error bands in plots.</p>
-<h3 id="Rubric-Coverage">Rubric Coverage<a class="anchor-link" href="#Rubric-Coverage">¶</a></h3><p>This submission comprehensively addresses all rubric components:</p>
-<ul>
-<li><strong>Correctness &amp; Feasibility (30%)</strong>: All algorithms implemented and tested; optimal solutions validated via exhaustive solver across multiple input sizes and overlap regimes.</li>
-<li><strong>Experimental Rigor (20%)</strong>: Controlled dataset generation with mathematically justified time horizon scaling ($T = \alpha n D$); multiple overlap regimes (high, medium, low); statistical analysis with at least 10 trials per configuration.</li>
-<li><strong>Big-O Validation (25%)</strong>: Empirical complexity plots (log-log and normalized) with theoretical fit lines; exponential exhaustive behavior confirmed; normalized runtime analysis demonstrates consistency with predicted complexity classes.</li>
-<li><strong>Comparative Analysis (15%)</strong>: Quality analysis across regimes; solution optimality ratios reported with means and standard deviations; detailed findings on greedy vs. optimal trade-offs; impact of dataset characteristics on algorithm performance.</li>
-<li><strong>Code Quality (10%)</strong>: Modular implementations with clear documentation; professional repository structure; comprehensive README with reproducibility instructions; clean separation of concerns (generation, algorithms, benchmarking, visualization).</li>
-</ul>
 </div>
 </div>
 </div>
