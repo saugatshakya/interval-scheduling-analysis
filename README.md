@@ -24,8 +24,6 @@ This project implements and empirically evaluates multiple algorithms for the **
 assignment_1/
 ├── report.ipynb                  # Main submission: complete analysis with code and results
 ├── report.html                   # Exported HTML version of report
-├── interval_scheduling_implementation.ipynb    # Implementation details
-├── theory_questions.ipynb        # Theory questions and answers
 └── README.md                     # This file
 ```
 
