@@ -22,13 +22,28 @@ This project implements and empirically evaluates multiple algorithms for the **
 
 ```
 assignment_1/
-├── report.ipynb                  # Main submission: complete analysis with code and results
-├── report.html                   # Exported HTML version of report
+├── report.ipynb                  # Main Jupyter notebook: complete analysis, code, and results
+├── report.html                   # Exported HTML version for browser viewing
+├── report.pdf                    # PDF export of notebook
+├── .git/                         # Git repository for version control
 └── README.md                     # This file
 ```
 
-**Key Files:**
-- **report.ipynb** — Primary submission document with theory, code, results, and conclusions
+**Primary Submission:**
+- **report.ipynb** — Jupyter notebook containing all theory, code, experiments, and analysis:
+  - **Cells 1-4**: Theory sections (Parts 1-3) answering all 15 questions with proofs and counterexamples
+  - **Cells 5-13**: Algorithm implementations (EFT, EST, SD greedy + exhaustive optimal solver)
+  - **Cell 14**: Benchmarking and timing framework intro with T formula justification
+  - **Cell 15**: Benchmarking code with rigorous timing protocol (warm-up + measurement phases)
+  - **Cell 16**: Big-O validation intro with pruning explanation
+  - **Cells 17-18**: Greedy and exhaustive complexity plots (3 overlap regimes each)
+  - **Cell 19**: Complexity comparison tables
+  - **Cell 20**: Solution quality analysis with boxplots
+  - **Cells 21+**: Comparative analysis and conclusions
+
+**Supporting Files:**
+- **report.html** — Viewable in any web browser without Jupyter installation
+- **report.pdf** — Printable PDF version for archival
 
 ## Installation & Setup
 
@@ -50,59 +65,104 @@ pip install jupyter numpy pandas matplotlib seaborn scipy
 
 ### View the Report
 Open `report.ipynb` in Jupyter to see:
-- Complete theoretical explanations and proofs
-- All algorithm implementations (greedy and exhaustive)
-- Benchmarking code and empirical runtime measurements
-- Complexity validation plots (log-log, normalized runtime)
-- Solution quality analysis across overlap regimes
-- Detailed findings and conclusions
+- **Cells 1-4**: Complete theoretical explanations (Parts 1, 2, 3) with proofs and counterexamples
+- **Cells 5-13**: Implementation of all algorithms (EFT, EST, SD, Exhaustive + helpers)
+- **Cell 14**: Benchmarking framework intro with T = α·n·D justification
+- **Cell 15**: Benchmarking code with complete timing protocol
+  - 1 warm-up execution (discarded)
+  - 10 measurement runs per trial
+  - 10 independent trials per configuration
+- **Cell 16**: Big-O validation section explaining why pruning reduces average-case runtime but not worst-case complexity
+- **Cells 17-18**: Greedy and exhaustive complexity plots
+  - Log-log scale and normalized runtime for all 3 overlap regimes
+- **Cell 19**: Complexity comparison tables across all overlap regimes
+- **Cell 20**: Solution quality analysis with boxplots
+- **Cells 21+**: Comparative analysis and conclusions
 
 ### Run Experiments
-To reproduce all experiments and generate plots:
+To reproduce all experiments from scratch:
 
 ```bash
 jupyter notebook report.ipynb
 ```
 
-Then run all cells sequentially. This will:
-1. Generate controlled synthetic datasets for greedy and exhaustive algorithms
-2. Measure empirical runtime across multiple input sizes
-3. Generate complexity validation plots
-4. Analyze solution quality across overlap regimes
-5. Display results as tables and visualizations
+Then:
+1. Select **Kernel → Restart Kernel and Clear All Outputs** to start fresh
+2. Run all cells sequentially (Shift+Enter)
+3. Observe results printed to console and plots generated inline
+4. Benchmarking will automatically display mean/std tables for each configuration
+
+**What happens when cells run:**
+1. **Cells 1-13**: Theory, helper functions, and algorithms (instant)
+2. **Cell 14**: Benchmarking framework setup (instant)
+3. **Cell 15**: Greedy and exhaustive benchmarking with result tables (~20-60 minutes)
+4. **Cell 16**: Big-O validation explanation (instant)
+5. **Cells 17-18**: Generate complexity plots across all overlap regimes (~1 minute)
+6. **Cell 19**: Complexity comparison tables (instant)
+7. **Cell 20**: Solution quality analysis with boxplots (~2-5 minutes)
+8. **Cells 21+**: Summary tables and conclusions (instant)
 
 ### Expected Runtime
-- **Greedy algorithms** ($n = 2^{10}$ to $2^{20}$): Typical runtime on a standard laptop is ~10 minutes
-- **Exhaustive algorithm** ($n = 5$ to $20$): Typical runtime on a standard laptop is ~30 minutes
-- **Total**: ~40 minutes (hardware-dependent; may vary significantly on older or slower machines)
+
+**Benchmarking Statistics:**
+- **Greedy algorithms**: 11 input sizes × 3 overlap regimes × 10 trials × 10 measurements = 3,300 executions
+  - Typical runtime on standard laptop: 5–15 minutes (highly hardware-dependent)
+- **Exhaustive algorithm**: 4 input sizes × 3 overlap regimes × 10 trials × 10 measurements = 1,200 executions
+  - Typical runtime on standard laptop: 10–40 minutes (exponential growth dominates; highly hardware-dependent)
+  - For $n=20$: ~20 million subsets checked per trial
+- **Solution quality analysis**: 6 input sizes × 3 overlap regimes × 10 trials × 3 algorithms = 540 executions
+  - Typical runtime: 2–5 minutes
+
+**Total estimated time**: 20–60 minutes (depending on CPU speed, background processes, and OS overhead)
+
+Hardware impact example:
+- Modern CPU (Intel i7/i9, M3 Pro or better): Lower end of range
+- Older/slower CPU or running other applications: Upper end of range
+- First run may be slower due to Jupyter kernel initialization
 
 ## Experimental Protocol
 
 ### Input Sizes
-- **Greedy algorithms**: $n \in \{2^{10}, 2^{11}, \ldots, 2^{20}\}$, at least 10 trials per size
-- **Exhaustive algorithm**: $n \in \{5, 10, 15, 18, 19, 20\}$, 3–5 trials per size (time-limited)
+- **Greedy algorithms**: $n \in \{2^{10}, 2^{11}, \ldots, 2^{20}\}$ = {1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576}
+  - 11 input sizes, minimum 10 independent trials per size
+- **Exhaustive algorithm**: $n \in \{5, 10, 15, 20\}$
+  - 4 input sizes, minimum 10 independent trials per size per overlap regime
+  - Limited to small $n$ due to exponential time complexity: $n=20$ requires ~20 million subset evaluations
 
 ### Dataset Generation
-Time horizon: $T = \alpha \cdot n \cdot D$
+**Time Horizon Formula**: $T = \alpha \cdot n \cdot D$
+
+**Parameters:**
+- $D = 10$ (maximum interval duration)
+- Number of trials per configuration: 10
+- Random seed: `np.random.seed(42)` (for reproducibility)
 
 **Overlap Regimes:**
-- High overlap: $\alpha = 0.1$ (dense conflicts)
-- Medium overlap: $\alpha = 1.0$ (balanced)
-- Low overlap: $\alpha = 5.0$ (sparse)
+- **High Overlap**: $\alpha = 0.1$ (dense conflicts, limited selection room)
+- **Medium Overlap**: $\alpha = 1.0$ (balanced conflicts)
+- **Low Overlap**: $\alpha = 5.0$ (sparse conflicts, many selection options)
 
 **Interval Properties:**
 - Start time: $s_i \sim \text{Uniform}[0, T)$
 - Duration: $d_i \sim \text{Uniform}[1, D]$
 - Finish time: $f_i = s_i + d_i$
 
-### Algorithm Complexities
+### Timing Protocol
+- **Data generation**: EXCLUDED from timing measurements
+- **Timer**: `time.perf_counter()` (high-resolution monotonic clock)
+- **Warm-up phase**: 1 execution per trial (results discarded to stabilize CPU cache)
+- **Measurement phase**: 10 executions per trial (averaged within trial)
+- **Aggregation**: Mean and standard deviation computed across 10 independent trials per (n, α) configuration
+- **Statistical rigor**: Each reported value = average of 10 measurement runs on a unique dataset, with std dev capturing variability across trials
+
+### Algorithm Implementations
 
 | Algorithm | Time Complexity | Space Complexity | Correctness |
 |---|---|---|---|
-| EFT | $O(n \log n)$ | $O(1)$ extra (excluding sorting and input storage) | Optimal |
-| EST | $O(n \log n)$ | $O(1)$ extra (excluding sorting and input storage) | Heuristic |
-| SD | $O(n \log n)$ | $O(1)$ extra (excluding sorting and input storage) | Heuristic |
-| Exhaustive | $O(n \cdot 2^n)$ | $O(n)$ for recursion stack | Optimal |
+| EFT | $O(n \log n)$ | $O(1)$ extra | Optimal ✓ |
+| EST | $O(n \log n)$ | $O(1)$ extra | Heuristic |
+| SD | $O(n \log n)$ | $O(1)$ extra | Heuristic |
+| Exhaustive | $O(n \cdot 2^n)$ | $O(n)$ recursion stack | Optimal ✓ |
 
 ## Key Results
 
